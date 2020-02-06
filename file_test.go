@@ -16,10 +16,6 @@ func mkfile(name string) error {
 	return nil
 }
 
-func mkdir(name string) error {
-	return os.Mkdir(name, 0666)
-}
-
 func TestFiles(t *testing.T) {
 	t.Run("success", func(t *testing.T) {
 		testdir, err := ioutil.TempDir("", "")
@@ -42,7 +38,7 @@ func TestFiles(t *testing.T) {
 				}
 				// if dir
 			} else if typ == "d" {
-				if err := mkdir(filepath.Join(testdir, f)); err != nil {
+				if err := os.Mkdir(filepath.Join(testdir, f), 0666); err != nil {
 					t.Fatalf("cannot create test dir: %s", err)
 				}
 			}
