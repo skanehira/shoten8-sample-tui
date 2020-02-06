@@ -31,15 +31,18 @@ func TestFiles(t *testing.T) {
 		}
 
 		for f, typ := range exceptedFiles {
+			tmpf := filepath.Join(testdir, f)
 			// if file
 			if typ == "f" {
-				if err := mkfile(filepath.Join(testdir, f)); err != nil {
-					t.Fatalf("cannot create test file: %s", err)
+				err := mkfile(tmpf)
+				if err != nil {
+					t.Fatalf("create error: %s", err)
 				}
 				// if dir
 			} else if typ == "d" {
-				if err := os.Mkdir(filepath.Join(testdir, f), 0666); err != nil {
-					t.Fatalf("cannot create test dir: %s", err)
+				err := os.Mkdir(tmpf, 0666)
+				if err != nil {
+					t.Fatalf("create error: %s", err)
 				}
 			}
 		}
@@ -51,14 +54,15 @@ func TestFiles(t *testing.T) {
 
 		for _, f := range files {
 			if _, ok := exceptedFiles[f.Name()]; !ok {
-				t.Fatalf("unexcepted file, want: a.go or b.md, got: %s", f.Name())
+				msg := "want: a.go or b.md, got: %s"
+				t.Fatalf(msg, f.Name())
 			}
 		}
 	})
 
 	t.Run("failed", func(t *testing.T) {
 		if _, err := Files("xxx"); err == nil {
-			t.Fatalf("unexcepted test: err is nil")
+			t.Fatalf("failed test: err is nil")
 		}
 	})
 }
