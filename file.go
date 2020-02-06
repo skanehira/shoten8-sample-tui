@@ -5,7 +5,7 @@ import (
 	"os"
 )
 
-func files(dir string) ([]os.FileInfo, error) {
+func Files(dir string) ([]os.FileInfo, error) {
 	fileInfo, err := ioutil.ReadDir(dir)
 	if err != nil {
 		return nil, err

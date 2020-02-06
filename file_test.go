@@ -44,7 +44,7 @@ func TestFiles(t *testing.T) {
 			}
 		}
 
-		files, err := files(testdir)
+		files, err := Files(testdir)
 		if err != nil {
 			t.Fatalf("cannot get files: %s", err)
 		}
@@ -57,7 +57,7 @@ func TestFiles(t *testing.T) {
 	})
 
 	t.Run("failed", func(t *testing.T) {
-		if _, err := files("xxx"); err == nil {
+		if _, err := Files("xxx"); err == nil {
 			t.Fatalf("unexcepted test: err is nil")
 		}
 	})
