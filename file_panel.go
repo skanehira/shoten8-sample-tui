@@ -29,13 +29,19 @@ func (f *FilePanel) SetFiles(files []os.FileInfo) {
 	f.files = files
 }
 
+func (f *FilePanel) SelectedFile() os.FileInfo {
+	row, _ := f.GetSelection()
+	if row > len(f.files)-1 || row < 0 {
+		return nil
+	}
+	return f.files[row]
+}
+
 func (f *FilePanel) Keybinding(g *GUI) {
 	f.SetSelectionChangedFunc(func(row, col int) {
-		if row > len(f.files)-1 || row < 0 {
-			return
+		if file := f.SelectedFile(); file != nil {
+			g.PreviewPanel.UpdateView(file.Name())
 		}
-		// TODO preview file
-		// file := f.files[row]
 	})
 }
 
