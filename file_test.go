@@ -26,21 +26,20 @@ func TestFiles(t *testing.T) {
 
 		exceptedFiles := map[string]string{
 			"a.go": "f",
-			"b.md": "f",
 			"tmp":  "d",
 		}
 
 		for f, typ := range exceptedFiles {
-			tmpf := filepath.Join(testdir, f)
+			tmp := filepath.Join(testdir, f)
 			// if file
 			if typ == "f" {
-				err := mkfile(tmpf)
+				err := mkfile(tmp)
 				if err != nil {
 					t.Fatalf("create error: %s", err)
 				}
 				// if dir
 			} else if typ == "d" {
-				err := os.Mkdir(tmpf, 0666)
+				err := os.Mkdir(tmp, 0666)
 				if err != nil {
 					t.Fatalf("create error: %s", err)
 				}
@@ -52,11 +51,9 @@ func TestFiles(t *testing.T) {
 			t.Fatalf("cannot get files: %s", err)
 		}
 
-		for _, f := range files {
-			if _, ok := exceptedFiles[f.Name()]; !ok {
-				msg := "want: a.go or b.md, got: %s"
-				t.Fatalf(msg, f.Name())
-			}
+		fileName := files[0].Name()
+		if fileName != "a.go" {
+			t.Fatalf("want: a.go, got: %s", fileName)
 		}
 	})
 
